@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const sendOTP = async (email, otp) => {
-  // During development, log the OTP in the console
+  // Development log
   console.log(`\n================================`);
   console.log(`DEVELOPMENT MODE: OTP for ${email} is: ${otp}`);
   console.log(`================================\n`);
@@ -13,10 +13,15 @@ const sendOTP = async (email, otp) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail', // or any other service
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
@@ -28,6 +33,7 @@ const sendOTP = async (email, otp) => {
     };
 
     await transporter.sendMail(mailOptions);
+
     console.log(`OTP email successfully sent to ${email}`);
   } catch (error) {
     console.error('Error sending OTP email:', error);
