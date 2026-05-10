@@ -31,7 +31,8 @@ const registerCustomer = async (req, res) => {
       otpExpiry
     });
 
-    await sendOTP(email, otp);
+    // Call sendOTP without await so the API responds immediately
+    sendOTP(email, otp).catch(console.error);
 
     res.status(201).json({
       message: 'Customer registered. Please verify OTP.',
